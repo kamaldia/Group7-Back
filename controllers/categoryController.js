@@ -32,18 +32,14 @@ export const getCategoryById = async (req, res) => {
 
 //Create new
 export const createCategory = async (req, res) => {
-  const { categoryName, categoryImage } = req.body;
-
   try {
-    const newCategory = new Category({
-      categoryName,
-      categoryImage,
-    });
+    const newCategory = new Category(req.body);
+    newCategory.categoryImage = req.file.path;
 
     const savedCategory = await newCategory.save();
     res.status(201).json(savedCategory);
   } catch (error) {
-    res.status(500).json({ error: "Error creating the Category" });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -69,16 +65,16 @@ export const deleteCategory = async (req, res) => {
 //update
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
-  const { categoryName, categoryImage } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Not valid id" });
   }
   try {
-    const updatedCategory = await Category.findByIdAndUpdate(id, {
-      categoryName,
-      categoryImage,
-    });
+    const upCategory = req.body;
+    if (req.file) {
+      upCategory.categoryImage = req.file.path;
+    }
+    const updatedCategory = await Category.findByIdAndUpdate(id, upCategory);
 
     if (!updatedCategory) {
       return res.status(404).json({ error: "Category not found" });
@@ -86,6 +82,6 @@ export const updateCategory = async (req, res) => {
 
     res.json(updatedCategory);
   } catch (error) {
-    res.status(500).json({ error: "Error updating the Category" });
+    res.status(500).json({ error: error.message });
   }
 };
