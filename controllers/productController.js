@@ -40,17 +40,11 @@ export const getProductById = async (req, res) => {
 
 //Create new
 export const createProduct = async (req, res) => {
-  const {
-    name,
-    description,
-    price,
-    imagePath,
-    category,
-    attributes,
-  } = req.body;
+  const { name, description, price, category, attributes } = req.body;
 
+  const pathes = req.files.map((each) => each.path);
   try {
-    if (!name || !description || !price || !category || !req.file.path) {
+    if (!name || !description || !price || !category || pathes.length === 0) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -67,7 +61,7 @@ export const createProduct = async (req, res) => {
       name,
       description,
       price,
-      imagePath: req.file.path,
+      imagePath: pathes,
       categoryId,
       attributes: savedDescription._id,
     });
@@ -104,6 +98,8 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
   let { attributes, category, ...updateFields } = req.body;
   let categoryId;
+  const pathes = req.files.map((each) => each.path);
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Not valid id" });
   }
@@ -135,8 +131,8 @@ export const updateProduct = async (req, res) => {
       updateObject.categoryId = categoryId;
     }
 
-    if (req.file) {
-      updateObject.imagePath = req.file.path;
+    if (pathes.length > 0) {
+      updateObject.imagePath = pathes;
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updateObject, {

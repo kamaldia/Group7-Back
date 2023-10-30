@@ -14,10 +14,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Product price is required'],
     },
-    imagePath: {
+    imagePath: [{
       type: String,
       required: [true, 'Image path is required'],
-    },
+    }],
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
