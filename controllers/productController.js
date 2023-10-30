@@ -50,8 +50,9 @@ export const createProduct = async (req, res) => {
   } = req.body;
 
   try {
-    const newAttributes = new Description(attributes);
-    const savedDescription = await newAttributes.save();
+    if (!name || !description || !price || !category || !req.file.path) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
     const findCategory = await Category.findOne({ categoryName: category });
     if (!findCategory) {
@@ -59,11 +60,14 @@ export const createProduct = async (req, res) => {
     }
     const categoryId = findCategory._id;
 
+    const newAttributes = new Description(attributes);
+    const savedDescription = await newAttributes.save();
+
     const newProduct = new Product({
       name,
       description,
       price,
-      imagePath,
+      imagePath: req.file.path,
       categoryId,
       attributes: savedDescription._id,
     });
@@ -88,18 +92,18 @@ export const deleteProduct = async (req, res) => {
     if (!deletedProduct) {
       return res.status(404).json({ error: "Product not found" });
     }
-    await Description.findByIdAndDelete(deletedProduct.attributes);
+    await Description.findByIdAndDelete({ _id: deletedProduct.attributes });
     res.json(deletedProduct);
   } catch (error) {
     res.status(500).json({ error: "Error deleting the product" });
   }
 };
 
-//Update 
+//Update
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  let { attributes, categoryId, ...updateFields } = req.body;
-
+  let { attributes, category, ...updateFields } = req.body;
+  let categoryId;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Not valid id" });
   }
@@ -117,9 +121,9 @@ export const updateProduct = async (req, res) => {
       });
     }
 
-    if (categoryId) {
+    if (category) {
       const findCategory = await Category.findOne({
-        categoryName: categoryId.categoryName,
+        categoryName: category,
       });
       if (findCategory) {
         categoryId = findCategory._id;
@@ -131,6 +135,10 @@ export const updateProduct = async (req, res) => {
       updateObject.categoryId = categoryId;
     }
 
+    if (req.file) {
+      updateObject.imagePath = req.file.path;
+    }
+
     const updatedProduct = await Product.findByIdAndUpdate(id, updateObject, {
       new: true,
     })
@@ -140,5 +148,31 @@ export const updateProduct = async (req, res) => {
     res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const getProductsByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    const foundCategory = await Category.findOne({ categoryName: category });
+    if (!foundCategory) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    const products = await Product.find({ categoryId: foundCategory._id })
+      .populate("categoryId")
+      .populate("attributes");
+
+    if (products.length === 0) {
+      return res
+        .status(404)
+        .json({ error: `No products found in category '${category}'` });
+    }
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error fetching products by category" });
   }
 };
