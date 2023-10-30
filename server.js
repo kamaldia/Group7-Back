@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-import blogRoutes from "./routes/blogRoutes.js";  
+import blogRoutes from "./routes/blogRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 app.use("/api", productRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", blogRoutes);
-
+app.use("/api", adminRoutes);
 
 app.listen(PORT, () => {
   console.log("Connected to MongoDB & Listening for requests on port", PORT);
