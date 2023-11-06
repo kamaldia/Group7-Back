@@ -4,14 +4,20 @@ import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import carouselRoutes from "./routes/carouselRoutes.js";
+import advertisementRoutes from "./routes/advertisementRoutes.js";
 import connectDB from "./config/db.js";
+import cors from "cors";
 
 dotenv.config();
 connectDB();
 
 const PORT = process.env.PORT;
 const app = express();
+app.use(express.static("./"));
 app.use(express.json());
+app.use(cors());
 // app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
@@ -23,6 +29,9 @@ app.use("/api", productRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", blogRoutes);
 app.use("/api", adminRoutes);
+app.use("/api", contactRoutes);
+app.use("/api", carouselRoutes);
+app.use("/api", advertisementRoutes);
 
 app.listen(PORT, () => {
   console.log("Connected to MongoDB & Listening for requests on port", PORT);

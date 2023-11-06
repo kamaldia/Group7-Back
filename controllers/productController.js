@@ -98,13 +98,15 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
   let { attributes, category, ...updateFields } = req.body;
   let categoryId;
-  const pathes = req.files.map((each) => each.path);
-
+  let pathes = [];
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Not valid id" });
   }
 
   try {
+    if (req.files) {
+      pathes = req.files.map((each) => each.path);
+    }
     const product = await Product.findById({ _id: id });
 
     if (!product) {

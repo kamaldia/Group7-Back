@@ -22,7 +22,7 @@ router.get("/blogs/", getAllBlogs);
 router.post("/blogs/", upload.single("image"), createBlog);
 
 //update a blog
-router.patch("/blogs/:id", upload.single("image"),updateBlog);
+router.patch("/blogs/:id", upload.single("image"), updateBlog);
 
 // delete a workout
 router.delete("/blogs/:id", deleteBlog);

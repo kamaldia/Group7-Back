@@ -7,7 +7,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  getProductsByCategory
+  getProductsByCategory,
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -18,10 +18,10 @@ router.get("/products/:id", getProductById);
 
 router.get("/categoryproducts/:category", getProductsByCategory);
 
-router.post("/products", upload.array("imagePath",3),createProduct);
+router.post("/products", upload.array("imagePath", 5), createProduct);
 
 router.delete("/products/:id", deleteProduct);
 
-router.put("/products/:id", upload.array("imagePath",3), updateProduct);
+router.put("/products/:id", upload.array("imagePath", 5), updateProduct);
 
 export default router;
