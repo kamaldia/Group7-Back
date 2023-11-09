@@ -40,27 +40,33 @@ export const getProductById = async (req, res) => {
 
 //Create new
 export const createProduct = async (req, res) => {
-  const { name, description, price, category, attributes } = req.body;
-
+  const { name, description, price, featured, category, attributes } = req.body;
+  console.log(req.body);
   const pathes = req.files.map((each) => each.path);
   try {
     if (!name || !description || !price || !category || pathes.length === 0) {
       return res.status(400).json({ error: "Missing required fields" });
     }
+    let savedDescription = {};
 
     const findCategory = await Category.findOne({ categoryName: category });
     if (!findCategory) {
       return res.status(400).json({ error: `Category ${category} not found` });
     }
     const categoryId = findCategory._id;
-
-    const newAttributes = new Description(attributes);
-    const savedDescription = await newAttributes.save();
-
+    if (attributes) {
+      let parsedAttributes = JSON.parse(attributes);
+      const newAttributes = new Description(parsedAttributes);
+      savedDescription = await newAttributes.save();
+    } else {
+      const newAttributes = new Description(attributes);
+      savedDescription = await newAttributes.save();
+    }
     const newProduct = new Product({
       name,
       description,
       price,
+      featured: featured || false,
       imagePath: pathes,
       categoryId,
       attributes: savedDescription._id,
@@ -96,7 +102,7 @@ export const deleteProduct = async (req, res) => {
 //Update
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  let { attributes, category, ...updateFields } = req.body;
+  let { attributes, category, featured, ...updateFields } = req.body;
   let categoryId;
   let pathes = [];
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -136,7 +142,11 @@ export const updateProduct = async (req, res) => {
     if (pathes.length > 0) {
       updateObject.imagePath = pathes;
     }
-
+    if (typeof featured !== "undefined") {
+      updateObject.featured = featured;
+    } else {
+      updateObject.featured = product.featured;
+    }
     const updatedProduct = await Product.findByIdAndUpdate(id, updateObject, {
       new: true,
     })

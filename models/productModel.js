@@ -20,6 +20,10 @@ const productSchema = new mongoose.Schema(
         required: [true, "Image path is required"],
       },
     ],
+    featured: {
+      type: Boolean,
+      default: false,
+    },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
@@ -30,7 +34,7 @@ const productSchema = new mongoose.Schema(
     attributes: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Description",
-      required: [true, "Description is required"],
+      // required: [true, "Description is required"],
     },
   },
   { timestamps: true }
