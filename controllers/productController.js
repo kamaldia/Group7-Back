@@ -120,9 +120,11 @@ export const updateProduct = async (req, res) => {
     }
 
     if (attributes) {
-      await Description.findByIdAndUpdate(product.attributes._id, {
-        ...attributes,
-      });
+      let parsedAttributes = JSON.parse(attributes);
+
+      await Description.findByIdAndUpdate(product.attributes._id,
+        parsedAttributes,
+      );
     }
 
     if (category) {
