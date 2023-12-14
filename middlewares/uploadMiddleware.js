@@ -1,12 +1,12 @@
-import multer from 'multer';
+import multer from "multer";
 
 // Create a storage engine
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './images/');
+    cb(null, "./images/");
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
   },
 });
 
