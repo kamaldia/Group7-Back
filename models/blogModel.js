@@ -18,14 +18,14 @@ const Blog = sequelize.define(
     },
     date: {
       type: DataTypes.DATEONLY,
-      defaultValue: Date.now.toString().split("T")[0],
+      defaultValue: DataTypes.NOW,
     },
     image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 Blog.sync();
 export default Blog;

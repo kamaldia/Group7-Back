@@ -13,7 +13,7 @@ const Advertisement = sequelize.define(
       allowNull: false,
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 Advertisement.sync();
 export default Advertisement;

@@ -13,7 +13,7 @@ const Product = sequelize.define("Products", {
     allowNull: false,
   },
   price: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.DECIMAL,
     allowNull: false,
   },
   imagePath: {
@@ -24,7 +24,7 @@ const Product = sequelize.define("Products", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-}, { timestamp: true }
+}, { timestamps: true }
 );
 
 Category.hasMany(Product);

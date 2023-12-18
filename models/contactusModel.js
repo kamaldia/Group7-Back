@@ -14,7 +14,7 @@ const Contact = sequelize.define("Contacts", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-}, { timestamp: true }
+}, { timestamps: true }
 );
 Contact.sync();
 export default Contact;
