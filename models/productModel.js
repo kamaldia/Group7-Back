@@ -1,45 +1,37 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
+import Description from "./descriptionModel.js";
+import Category from "./categoryModel.js";
 
-const productSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Product name is required"],
-    },
-    description: {
-      type: String,
-      required: [true, "Product description is required"],
-    },
-    price: {
-      type: Number,
-      required: [true, "Product price is required"],
-    },
-    imagePath: [
-      {
-        type: String,
-        required: [true, "Image path is required"],
-      },
-    ],
-    featured: {
-      type: Boolean,
-      default: false,
-    },
-    categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: [true, "Category is required"],
-    },
-
-    // for any not common attributes
-    attributes: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Description",
-      // required: [true, "Description is required"],
-    },
+const Product = sequelize.define("Products", {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  { timestamps: true }
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.NUMBER,
+    allowNull: false,
+  },
+  imagePath: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  featured: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+}, { timestamp: true }
 );
 
-const Product = mongoose.model("Product", productSchema);
+Category.hasMany(Product);
+Product.belongsTo(Category);
 
+Description.hasOne(Product);
+Product.belongsTo(Description);
+
+Product.sync();
 export default Product;

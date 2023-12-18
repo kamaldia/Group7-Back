@@ -1,43 +1,37 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
 
-const descriptionSchema = new mongoose.Schema({
-  ////main
+const Description = sequelize.define("Descriptions", {
   operatingSystem: {
-    type: String,
+    type: DataTypes.STRING,
   },
   camera: {
-    type: String,
+    type: DataTypes.STRING,
   },
   display: {
-    type: String,
+    type: DataTypes.STRING,
   },
   battery: {
-    type: String,
+    type: DataTypes.STRING,
   },
   ram: {
-    type: String,
+    type: DataTypes.STRING,
   },
   cpu: {
-    type: String,
+    type: DataTypes.STRING,
   },
   storage: {
-    type: String,
+    type: DataTypes.STRING,
   },
-  /////////////////////////
-
-  // accesories
   accessoriesColor: {
-    type: String,
+    type: DataTypes.STRING,
   },
   accessoriesType: {
-    type: String,
+    type: DataTypes.STRING,
   },
   accessoriesBrand: {
-    type: String,
+    type: DataTypes.STRING,
   },
-  //////////////////////
 });
-
-const Description = mongoose.model("Description", descriptionSchema);
-
+Description.sync();
 export default Description;

@@ -1,17 +1,16 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
 
-const categorySchema = new mongoose.Schema({
+const Category = sequelize.define("Categories", {
   categoryName: {
-    type: String,
-    required: [true, "Category name is required"],
+    type: DataTypes.STRING,
     unique: true,
+    allowNull: false,
   },
   categoryImage: {
-    type: String,
-    required: [true, "Category image is required"],
+    type: DataTypes.STRING,
+    allowNull: false,
   },
 });
-
-const Category = mongoose.model("Category", categorySchema);
-
+Category.sync();
 export default Category;

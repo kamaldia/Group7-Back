@@ -1,31 +1,31 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
 
-const blogSchema = new mongoose.Schema(
+const Blog = sequelize.define(
+  "Blogs",
   {
     title: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     author: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     content: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     date: {
-      type: Date,
-      default: Date.now,
+      type: DataTypes.DATEONLY,
+      defaultValue: Date.now.toString().split("T")[0],
     },
     image: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
-  { timestamps: true }
+  { timestamp: true }
 );
-
-const Blog = mongoose.model("Blog", blogSchema);
-
+Blog.sync();
 export default Blog;
