@@ -36,7 +36,7 @@ const createAdmin = async (req, res) => {
 // Get all
 const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admin.find({}).sort({ createdAt: -1 });
+    const admins = await Admin.findAll({}).sort({ createdAt: -1 });
     res.status(200).json(admins);
   } catch (error) {
     console.error(error);
@@ -49,7 +49,7 @@ const getAdminById = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const admin = await Admin.findById(id);
+    const admin = await Admin.findOne(id);
 
     if (!admin) {
       return res.status(404).json({ error: "Admin not found" });
@@ -67,7 +67,7 @@ const updateAdmin = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const existingAdmin = await Admin.findById(id);
+    const existingAdmin = await Admin.findOne(id);
 
     if (!existingAdmin) {
       return res.status(404).json({ error: "Admin not found" });

@@ -10,7 +10,6 @@ export const getAllAdvertisements = async (req, res) => {
     res.status(500).json({ error: "Error fetching Advertisements" });
   }
 };
-
 //get Single
 export const getAdvertisementById = async (req, res) => {
   const { id } = req.params;
