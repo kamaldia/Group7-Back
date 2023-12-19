@@ -13,7 +13,7 @@ import cors from "cors";
 dotenv.config();
 sequelize.sync();
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 const app = express();
 app.use(express.static("./"));
 app.use(express.json());
