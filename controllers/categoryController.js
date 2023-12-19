@@ -1,10 +1,11 @@
-import Category from "../models/categoryModel.js";
-import mongoose from "mongoose";
+import { Category } from "../models/categoryModel.js";
 
 //Get all
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find({}).sort({ createdAt: -1 });
+    const categories = await Category.findAll({
+      order: [["createdAt", "DESC"]],
+    });
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ error: "Error fetching categories" });
@@ -15,12 +16,8 @@ export const getAllCategories = async (req, res) => {
 export const getCategoryById = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not valid id" });
-  }
-
   try {
-    const category = await Category.findById({ _id: id });
+    const category = await Category.findByPk(id);
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
@@ -33,10 +30,12 @@ export const getCategoryById = async (req, res) => {
 //Create new
 export const createCategory = async (req, res) => {
   try {
-    const newCategory = new Category(req.body);
-    newCategory.categoryImage = req.file.path;
+    const newCategory = {
+      ...req.body,
+      categoryImage: req.file.path,
+    };
 
-    const savedCategory = await newCategory.save();
+    const savedCategory = await Category.create(newCategory);
     res.status(201).json(savedCategory);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,12 +46,8 @@ export const createCategory = async (req, res) => {
 export const deleteCategory = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not valid id" });
-  }
-
   try {
-    const deletedCategory = await Category.findByIdAndDelete({ _id: id });
+    const deletedCategory = await Category.destroy({ where: { id } });
     if (!deletedCategory) {
       return res.status(404).json({ error: "Category not found" });
     }
@@ -66,20 +61,19 @@ export const deleteCategory = async (req, res) => {
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not valid id" });
-  }
   try {
-    const upCategory = req.body;
-    if (req.file) {
-      upCategory.categoryImage = req.file.path;
-    }
-    const updatedCategory = await Category.findByIdAndUpdate(id, upCategory);
+    const upCategory = {
+      ...req.body,
+      categoryImage: req.file ? req.file.path : undefined,
+    };
 
-    if (!updatedCategory) {
+    const [updated] = await Category.update(upCategory, { where: { id } });
+
+    if (!updated) {
       return res.status(404).json({ error: "Category not found" });
     }
 
+    const updatedCategory = await Category.findByPk(id);
     res.json(updatedCategory);
   } catch (error) {
     res.status(500).json({ error: error.message });

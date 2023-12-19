@@ -1,10 +1,11 @@
-import Carousel from "../models/carouselModel.js";
-import mongoose from "mongoose";
+import { Carousel } from "../models/carouselModel.js";
 
 //Get all
 export const getAllCarousels = async (req, res) => {
   try {
-    const carousels = await Carousel.find({}).sort({ createdAt: -1 });
+    const carousels = await Carousel.findAll({
+      order: [["createdAt", "DESC"]],
+    });
     res.status(200).json(carousels);
   } catch (error) {
     res.status(500).json({ error: "Error fetching Carousels" });
@@ -15,12 +16,8 @@ export const getAllCarousels = async (req, res) => {
 export const getCarouselById = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not valid id" });
-  }
-
   try {
-    const carousel = await Carousel.findById({ _id: id });
+    const carousel = await Carousel.findByPk(id);
     if (!carousel) {
       return res.status(404).json({ error: "carousel not found" });
     }
@@ -33,10 +30,12 @@ export const getCarouselById = async (req, res) => {
 //Create new
 export const createCarousel = async (req, res) => {
   try {
-    const newcarousel = new Carousel(req.body);
-    newcarousel.image = req.file.path;
+    const newcarousel = {
+      ...req.body,
+      image: req.file.path,
+    };
 
-    const savedcarousel = await newcarousel.save();
+    const savedcarousel = await Carousel.create(newcarousel);
     res.status(201).json(savedcarousel);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,12 +46,8 @@ export const createCarousel = async (req, res) => {
 export const deleteCarousel = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not valid id" });
-  }
-
   try {
-    const deletedcarousel = await Carousel.findByIdAndDelete({ _id: id });
+    const deletedcarousel = await Carousel.destroy({ where: { id } });
     if (!deletedcarousel) {
       return res.status(404).json({ error: "carousel not found" });
     }
@@ -66,20 +61,19 @@ export const deleteCarousel = async (req, res) => {
 export const updateCarousel = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not valid id" });
-  }
   try {
-    const upcarousel = req.body;
-    if (req.file) {
-      upcarousel.image = req.file.path;
-    }
-    const updatedcarousel = await Carousel.findByIdAndUpdate(id, upcarousel);
+    const upcarousel = {
+      ...req.body,
+      image: req.file ? req.file.path : undefined,
+    };
 
-    if (!updatedcarousel) {
+    const [updated] = await Carousel.update(upcarousel, { where: { id } });
+
+    if (!updated) {
       return res.status(404).json({ error: "carousel not found" });
     }
 
+    const updatedcarousel = await Carousel.findByPk(id);
     res.json(updatedcarousel);
   } catch (error) {
     res.status(500).json({ error: error.message });
