@@ -1,19 +1,19 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
 
-const advertisementSchema = new mongoose.Schema(
+const Advertisement = sequelize.define(
+  "Advertisements",
   {
     title: {
-      type: String,
-      default: "Advertisement title",
+      type: DataTypes.STRING,
+      defaultValue: "Advertisement title",
     },
     image: {
-      type: String,
-      required: [true, "Advertisement item image is required"],
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   { timestamps: true }
 );
-
-const Advertisement = mongoose.model("Advertisement", advertisementSchema);
-
+Advertisement.sync();
 export default Advertisement;

@@ -1,17 +1,15 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
 
-const adminSchema = new mongoose.Schema({
+const Admin = sequelize.define("Admins", {
   username: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
     unique: true,
+    allowNull: false,
   },
   password: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
   },
 });
-
-const Admin = mongoose.model("Admin", adminSchema);
-
+Admin.sync();
 export default Admin;

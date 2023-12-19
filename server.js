@@ -7,13 +7,13 @@ import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import carouselRoutes from "./routes/carouselRoutes.js";
 import advertisementRoutes from "./routes/advertisementRoutes.js";
-import connectDB from "./config/db.js";
+import sequelize from "./config/connection.js";
 import cors from "cors";
 
 dotenv.config();
-connectDB();
+sequelize.sync();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(express.static("./"));
 app.use(express.json());
@@ -34,5 +34,5 @@ app.use("/api", carouselRoutes);
 app.use("/api", advertisementRoutes);
 
 app.listen(PORT, () => {
-  console.log("Connected to MongoDB & Listening for requests on port", PORT);
+  console.log("Connected to DB & Listening for requests on port", PORT);
 });

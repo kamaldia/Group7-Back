@@ -1,19 +1,15 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/connection.js";
 
-const carouselSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      default: "carousel title",
-    },
-    image: {
-      type: String,
-      required: [true, "Carousel item image is required"],
-    },
+const Carousel = sequelize.define("Carousels", {
+  title: {
+    type: DataTypes.STRING,
+    defaultValue: "carousel title",
   },
-  { timestamps: true }
-);
-
-const Carousel = mongoose.model("Carousel", carouselSchema);
-
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+Carousel.sync();
 export default Carousel;
