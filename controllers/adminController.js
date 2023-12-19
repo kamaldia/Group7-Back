@@ -1,10 +1,10 @@
-import Admin from "../models/adminModel.js";
+import { Admin } from "../models/adminModel.js";
 
 const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({ username });
+    const admin = await Admin.findOne({ where: { username } });
 
     if (!admin) {
       return res.status(404).json({ error: "Admin not found" });
@@ -24,9 +24,8 @@ const loginAdmin = async (req, res) => {
 // Create a new admin
 const createAdmin = async (req, res) => {
   try {
-    const newAdmin = new Admin(req.body);
-    const savedAdmin = await newAdmin.save();
-    res.status(201).json(savedAdmin);
+    const newAdmin = await Admin.create(req.body);
+    res.status(201).json(newAdmin);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to create a new admin" });
@@ -36,7 +35,7 @@ const createAdmin = async (req, res) => {
 // Get all
 const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admin.find({}).sort({ createdAt: -1 });
+    const admins = await Admin.findAll({ order: [["createdAt", "DESC"]] });
     res.status(200).json(admins);
   } catch (error) {
     console.error(error);
@@ -49,7 +48,7 @@ const getAdminById = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const admin = await Admin.findById(id);
+    const admin = await Admin.findByPk(id);
 
     if (!admin) {
       return res.status(404).json({ error: "Admin not found" });
@@ -67,19 +66,14 @@ const updateAdmin = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const existingAdmin = await Admin.findById(id);
+    const [updated] = await Admin.update(req.body, { where: { id } });
 
-    if (!existingAdmin) {
-      return res.status(404).json({ error: "Admin not found" });
-    }
-
-    const updatedAdmin = await Admin.findByIdAndUpdate(id, req.body);
-
-    if (!updatedAdmin) {
+    if (!updated) {
       return res.status(404).json({ error: "Failed to update admin" });
     }
 
-    res.status(200).json(updatedAdmin);
+    const updatedAdmin = await Admin.findOne({ where: { id } });
+    res.status(200).json({ message: "Admin updated", updatedAdmin });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update the admin" });
@@ -91,13 +85,13 @@ const deleteAdmin = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const deletedAdmin = await Admin.findByIdAndDelete(id);
+    const deleted = await Admin.destroy({ where: { id } });
 
-    if (!deletedAdmin) {
+    if (!deleted) {
       return res.status(404).json({ error: "Admin not found" });
     }
 
-    res.status(204).json(deletedAdmin);
+    res.status(204).json({ message: "Admin deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete the admin" });
