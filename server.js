@@ -9,12 +9,15 @@ import carouselRoutes from "./routes/carouselRoutes.js";
 import advertisementRoutes from "./routes/advertisementRoutes.js";
 import sequelize from "./config/connection.js";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 dotenv.config();
-sequelize.sync();
+sequelize.sync({force:false});
 
 const PORT = process.env.PORT || 8001;
 const app = express();
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.json())
 app.use(express.static("./"));
 app.use(express.json());
 app.use(cors());
@@ -25,13 +28,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", productRoutes);
-app.use("/api", categoryRoutes);
-app.use("/api", blogRoutes);
-app.use("/api", adminRoutes);
-app.use("/api", contactRoutes);
-app.use("/api", carouselRoutes);
-app.use("/api", advertisementRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/blog", blogRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/contactUs", contactRoutes);
+app.use("/api/carousel", carouselRoutes);
+app.use("/api/advertisement", advertisementRoutes);
 
 app.listen(PORT, () => {
   console.log("Connected to DB & Listening for requests on port", PORT);

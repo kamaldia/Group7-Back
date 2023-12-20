@@ -1,4 +1,4 @@
-import { Blog } from "../models/blogModel.js";
+import  Blog  from "../models/blogModel.js";
 
 // get a single Blog
 const getBlogById = async (req, res) => {
@@ -28,16 +28,15 @@ const getAllBlogs = async (req, res) => {
 
 // create a new Blog
 const createBlog = async (req, res) => {
-  const { title, author, content, date, image } = req.body;
+  const { title, author, content, date } = req.body;
+  const image = req.file.path;
 
   //add Blog to db
   try {
-    const newBlog = req.body;
-    newBlog.image = req.file.path;
-
-    const savedBlog = await Blog.create(newBlog);
+    const savedBlog = await Blog.create({title,author,content,date,image});
     res.status(201).json(savedBlog);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: "Failed to create a new Blog post" });
   }
 };
@@ -73,7 +72,7 @@ const deleteBlog = async (req, res) => {
     if (!deleted) {
       return res.status(404).json({ error: "Blog post not found" });
     }
-    res.status(204).send(); // the server successfully processed the client's request, and that the server is not returning any content.
+    res.status(200).json({message:`article was deleted successfully`}); // the server successfully processed the client's request, and that the server is not returning any content.
   } catch (error) {
     res.status(500).json({ error: "Failed to delete the Blog post" });
   }

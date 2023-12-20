@@ -1,4 +1,5 @@
-import { Admin } from "../models/adminModel.js";
+import  Admin  from "../models/adminModel.js";
+import bcrypt from 'bcrypt'
 
 const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
@@ -9,8 +10,9 @@ const loginAdmin = async (req, res) => {
     if (!admin) {
       return res.status(404).json({ error: "Admin not found" });
     }
+    const match = bcrypt.compare(password,admin.password)
 
-    if (password === admin.password) {
+    if (match) {
       res.status(200).json({ status: "ok", data: admin });
     } else {
       res.status(401).json({ error: "Incorrect password" });
@@ -23,8 +25,10 @@ const loginAdmin = async (req, res) => {
 
 // Create a new admin
 const createAdmin = async (req, res) => {
+  const {username,password} = req.body
   try {
-    const newAdmin = await Admin.create(req.body);
+    const hashedPassword = await bcrypt.hash(password,12)
+    const newAdmin = await Admin.create({username,hashedPassword});
     res.status(201).json(newAdmin);
   } catch (error) {
     console.error(error);
