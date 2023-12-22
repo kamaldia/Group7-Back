@@ -1,4 +1,4 @@
-import { Blog } from "../models/blogModel.js";
+import  Blog  from "../models/blogModel.js";
 
 // get a single Blog
 const getBlogById = async (req, res) => {

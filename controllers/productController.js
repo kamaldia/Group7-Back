@@ -2,13 +2,11 @@ import Product from "../models/productModel.js";
 import Category from "../models/categoryModel.js";
 import Description from "../models/descriptionModel.js";
 
-import mongoose from "mongoose";
-
 //Get all
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({})
-      .sort({ createdAt: -1 })
+    const products = await Product.findAll({})
+      .sort({ createdAt: -1 }) 
       .populate("categoryId")
       .populate("attributes");
     res.status(200).json(products);
