@@ -12,16 +12,16 @@ import {
 
 const router = express.Router();
 
-router.get("/products", getAllProducts);
+router.get("/", getAllProducts);
 
-router.get("/products/:id", getProductById);
+router.get("/:id", getProductById);
 
-router.get("/categoryproducts/:category", getProductsByCategory);
+router.get("/category/:category", getProductsByCategory);
 
-router.post("/products", upload.array("imagePath", 5), createProduct);
+router.post("/", upload.array("imagePath", 5), createProduct);
 
-router.delete("/products/:id", deleteProduct);
+router.delete("/:id", deleteProduct);
 
-router.put("/products/:id", upload.array("imagePath", 5), updateProduct);
+router.put("/:id", upload.array("imagePath", 5), updateProduct);
 
 export default router;

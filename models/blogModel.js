@@ -17,7 +17,7 @@ const Blog = sequelize.define(
       allowNull: false,
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
     image: {

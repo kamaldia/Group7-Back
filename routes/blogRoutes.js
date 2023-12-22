@@ -13,18 +13,18 @@ import {
 const router = express.Router();
 
 //get single blog
-router.get("/blogs/:id", getBlogById);
+router.get("/:id", getBlogById);
 
 // get all blogs
-router.get("/blogs/", getAllBlogs);
+router.get("/", getAllBlogs);
 
 // post a new blog
-router.post("/blogs/", upload.single("image"), createBlog);
+router.post("/", upload.single("image"), createBlog);
 
 //update a blog
-router.patch("/blogs/:id", upload.single("image"), updateBlog);
+router.patch("/:id", upload.single("image"), updateBlog);
 
 // delete a workout
-router.delete("/blogs/:id", deleteBlog);
+router.delete("/:id", deleteBlog);
 
 export default router;

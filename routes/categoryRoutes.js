@@ -11,14 +11,14 @@ import {
 
 const router = express.Router();
 
-router.get("/categories", getAllCategories);
+router.get("/", getAllCategories);
 
-router.get("/categories/:id", getCategoryById);
+router.get("/:id", getCategoryById);
 
-router.post("/categories", upload.single("categoryImage"), createCategory);
+router.post("/", upload.single("categoryImage"), createCategory);
 
-router.put("/categories/:id", upload.single("categoryImage"), updateCategory);
+router.put("/:id", upload.single("categoryImage"), updateCategory);
 
-router.delete("/categories/:id", deleteCategory);
+router.delete("/:id", deleteCategory);
 
 export default router;

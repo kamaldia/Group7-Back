@@ -1,4 +1,4 @@
-import Carousel from "../models/carouselModel.js";
+import  Carousel  from "../models/carouselModel.js";
 
 //Get all
 export const getAllCarousels = async (req, res) => {

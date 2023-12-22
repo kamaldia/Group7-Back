@@ -10,14 +10,14 @@ import {
 
 const router = express.Router();
 
-router.post("/carousels", upload.single("image"), createCarousel);
+router.post("/", upload.single("image"), createCarousel);
 
-router.get("/carousels", getAllCarousels);
+router.get("/", getAllCarousels);
 
-router.get("/carousels/:id", getCarouselById);
+router.get("/:id", getCarouselById);
 
-router.put("/carousels/:id", upload.single("image"), updateCarousel);
+router.put("/:id", upload.single("image"), updateCarousel);
 
-router.delete("/carousels/:id", deleteCarousel);
+router.delete("/:id", deleteCarousel);
 
 export default router;
