@@ -40,39 +40,26 @@ export const getProductById = async (req, res) => {
 
 //Create new
 export const createProduct = async (req, res) => {
-  const { name, description, price, featured, category, attributes } = req.body;
-  console.log(req.body);
+  const { name, description, price, featured, categoryId, descriptionId } = req.body;
+  console.log("this is body in product controller: ", req.body);
   const pathes = req.files.map((each) => each.path);
+  console.log("this is pathes in product controller: ", req.files);
   try {
-    if (!name || !description || !price || !category || pathes.length === 0) {
+    if (!name || !description || !price || !categoryId || !descriptionId || pathes.length === 0) {
       return res.status(400).json({ error: "Missing required fields" });
     }
-    let savedDescription = {};
-
-    const findCategory = await Category.findOne({ categoryName: category });
-    if (!findCategory) {
-      return res.status(400).json({ error: `Category ${category} not found` });
-    }
-    const categoryId = findCategory._id;
-    if (attributes) {
-      let parsedAttributes = JSON.parse(attributes);
-      const newAttributes = new Description(parsedAttributes);
-      savedDescription = await newAttributes.save();
-    } else {
-      const newAttributes = new Description(attributes);
-      savedDescription = await newAttributes.save();
-    }
-    const newProduct = new Product({
+    const newProduct = new Product({ // we will have to add a description in front end
       name,
       description,
       price,
       featured: featured || false,
-      imagePath: pathes,
+      imagePath: pathes[0],
       categoryId,
-      attributes: savedDescription._id,
+      descriptionId,
     });
-
+    console.log("this is newProduct in product controllr: ", newProduct)
     const savedProduct = await newProduct.save();
+    console.log("this is savedProduct in product controllr: ", savedProduct)
     res.status(201).json(savedProduct);
   } catch (error) {
     res.status(500).json({ error: "Error creating the product" });
