@@ -28,7 +28,7 @@ const createAdmin = async (req, res) => {
   const {username,password} = req.body
   try {
     const hashedPassword = await bcrypt.hash(password,12)
-    const newAdmin = await Admin.create({username,hashedPassword});
+    const newAdmin = await Admin.create({username, password: hashedPassword});
     res.status(201).json(newAdmin);
   } catch (error) {
     console.error(error);
@@ -77,7 +77,9 @@ const updateAdmin = async (req, res) => {
     }
 
     const updatedAdmin = await Admin.findOne({ where: { id } });
-    res.status(200).json({ message: "Admin updated", updatedAdmin });
+    const hashedPassword = await bcrypt.hash(updatedAdmin.password,12)
+    const updatedWithPass = await Admin.update({username: updatedAdmin.username, password: hashedPassword}, { where: { id } } )
+    res.status(200).json({ message: "Admin updated", updatedWithPass });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update the admin" });
