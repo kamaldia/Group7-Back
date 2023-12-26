@@ -10,6 +10,9 @@ const User = sequelize.define("Users", {
   password: {
     type: DataTypes.STRING,
   },
+  role: {
+    type: DataTypes.STRING,
+  },
 });
 User.sync();
 export default User;

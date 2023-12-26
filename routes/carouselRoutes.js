@@ -1,5 +1,6 @@
 import express from "express";
 import upload from "../middlewares/uploadMiddleware.js";
+import Verification from '../middlewares/jwt.js';
 import {
   createCarousel,
   getAllCarousels,
@@ -10,14 +11,14 @@ import {
 
 const router = express.Router();
 
-router.post("/", upload.single("image"), createCarousel);
+router.post("/", Verification.verifyLogin, upload.single("image"), createCarousel);
 
-router.get("/", getAllCarousels);
+router.get("/", Verification.verifyLogin, getAllCarousels);
 
-router.get("/:id", getCarouselById);
+router.get("/:id", Verification.verifyLogin, getCarouselById);
 
-router.put("/:id", upload.single("image"), updateCarousel);
+router.put("/:id", Verification.verifyLogin, upload.single("image"), updateCarousel);
 
-router.delete("/:id", deleteCarousel);
+router.delete("/:id", Verification.verifyLogin, deleteCarousel);
 
 export default router;

@@ -1,4 +1,5 @@
 import express from "express";
+import Verification from '../middlewares/jwt.js';
 import {
   createAdmin,
   getAllAdmins,
@@ -11,21 +12,21 @@ import {
 const router = express.Router();
 
 //login admin
-router.post("/login", loginAdmin);
+router.post("/login", Verification.verifyLogin, Verification.verifyAdmin, loginAdmin);
 
 //Create
-router.post("/", createAdmin);
+router.post("/", Verification.verifyLogin, Verification.verifyAdmin, createAdmin);
 
 // Get all
-router.get("/", getAllAdmins);
+router.get("/", Verification.verifyLogin, Verification.verifyAdmin, getAllAdmins);
 
 // Get single
-router.get("/:id", getAdminById);
+router.get("/:id", Verification.verifyLogin, Verification.verifyAdmin, getAdminById);
 
 // Update
-router.put("/:id", updateAdmin);
+router.put("/:id", Verification.verifyLogin, Verification.verifyAdmin, updateAdmin);
 
 // Delete
-router.delete("/:id", deleteAdmin);
+router.delete("/:id", Verification.verifyLogin, Verification.verifyAdmin, deleteAdmin);
 
 export default router;

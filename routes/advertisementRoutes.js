@@ -1,4 +1,5 @@
 import express from "express";
+import Verification from '../middlewares/jwt.js';
 import {
   createAdvertisement,
   getAllAdvertisements,
@@ -10,14 +11,14 @@ import upload from "../middlewares/uploadMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", upload.single("image"), createAdvertisement);
+router.post("/", Verification.verifyLogin, upload.single("image"), createAdvertisement);
 
-router.get("/", getAllAdvertisements);
+router.get("/", Verification.verifyLogin, getAllAdvertisements);
 
-router.get("/:id", getAdvertisementById);
+router.get("/:id", Verification.verifyLogin, getAdvertisementById);
 
-router.put("/:id", upload.single("image"), updateAdvertisement);
+router.put("/:id", Verification.verifyLogin, upload.single("image"), updateAdvertisement);
 
-router.delete("/:id", deleteAdvertisement);
+router.delete("/:id", Verification.verifyLogin, deleteAdvertisement);
 
 export default router;

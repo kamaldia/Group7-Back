@@ -1,5 +1,6 @@
 import express from "express";
 import upload from "../middlewares/uploadMiddleware.js";
+import Verification from '../middlewares/jwt.js';
 
 import {
   getAllProducts,
@@ -12,16 +13,16 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllProducts);
+router.get("/", Verification.verifyLogin, getAllProducts);
 
-router.get("/:id", getProductById);
+router.get("/:id", Verification.verifyLogin, getProductById);
 
-router.get("/category/:category", getProductsByCategory);
+router.get("/category/:category", Verification.verifyLogin, getProductsByCategory);
 
-router.post("/", upload.array("imagePath", 5), createProduct);
+router.post("/", Verification.verifyLogin, upload.array("imagePath", 5), createProduct);
 
-router.delete("/:id", deleteProduct);
+router.delete("/:id", Verification.verifyLogin, deleteProduct);
 
-router.put("/:id", upload.array("imagePath", 5), updateProduct);
+router.put("/:id", Verification.verifyLogin, upload.array("imagePath", 5), updateProduct);
 
 export default router;
