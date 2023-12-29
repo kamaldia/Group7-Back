@@ -1,7 +1,13 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
 
 const Category = sequelize.define("Categories", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   categoryName: {
     type: DataTypes.STRING,
     unique: true,
@@ -12,5 +18,5 @@ const Category = sequelize.define("Categories", {
     allowNull: false,
   },
 });
-Category.sync();
+// Category.sync();
 export default Category;

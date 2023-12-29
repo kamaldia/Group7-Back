@@ -1,7 +1,15 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
+import Order from "./orderModel.js";
+import Cart from "./cartModel.js";
 
 const User = sequelize.define("Users", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   username: {
     type: DataTypes.STRING,
     unique: true,
@@ -11,5 +19,7 @@ const User = sequelize.define("Users", {
     type: DataTypes.STRING,
   },
 });
-User.sync();
+
+
+// User.sync();
 export default User;
