@@ -6,13 +6,9 @@ import {
   getAdminById,
   updateAdmin,
   deleteAdmin,
-  loginAdmin,
 } from "../controllers/adminController.js";
 
 const router = express.Router();
-
-//login admin
-router.post("/login", Verification.verifyLogin, Verification.verifyAdmin, loginAdmin);
 
 //Create
 router.post("/", Verification.verifyLogin, Verification.verifyAdmin, createAdmin);

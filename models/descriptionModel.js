@@ -1,7 +1,13 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
 
 const Description = sequelize.define("Descriptions", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   operatingSystem: {
     type: DataTypes.STRING,
   },
@@ -33,5 +39,5 @@ const Description = sequelize.define("Descriptions", {
     type: DataTypes.STRING,
   },
 });
-Description.sync();
+// Description.sync();
 export default Description;
