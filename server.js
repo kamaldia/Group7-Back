@@ -15,7 +15,7 @@ import bodyParser from "body-parser";
 dotenv.config();
 sequelize.sync({force:false});
 
-const PORT = process.env.PORT || 8001;
+const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
