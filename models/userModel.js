@@ -1,25 +1,27 @@
-import { DataTypes,Sequelize } from "sequelize";
+import { DataTypes,STRING,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
 import Order from "./orderModel.js";
 import Cart from "./cartModel.js";
 
 const User = sequelize.define("Users", {
   id: {
-    type: Sequelize.INTEGER,
+    type: STRING,
     allowNull: false,
-    autoIncrement: true,
     primaryKey: true,
+    allowNull: false,
   },
   username: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
   },
-  password: {
+  password: { //only for admins
     type: DataTypes.STRING,
+    allowNull: true,
   },
   role: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('admin', 'user'),
+    defaultValue: 'user',
   },
 });
 

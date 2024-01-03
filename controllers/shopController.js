@@ -5,7 +5,7 @@ import CartItem from "../models/cartItemsModel.js";
 import OrderItem from "../models/orderItemsModel.js";
 
 export const getCart = async(req,res,next) =>{
-    var cart 
+    var cart
       cart = await req.user.getCart();
     if(!cart) {
         // cart = await req.user.createCart()

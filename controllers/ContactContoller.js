@@ -2,9 +2,9 @@ import  Contact  from "../models/contactusModel.js";
 
 // Create a new contact
 export const createContact = async (req, res) => {
-  const {contactName,contactMessage,contactEmsil}= req.body;
+  const {contactName,contactMessage,contactEmail}= req.body;
   try {
-    const contact = await Contact.create({contactName,contactMessage,contactEmsil});
+    const contact = await Contact.create({contactName,contactMessage,contactEmail});
     res.status(201).json(contact);
   } catch (err) {
     res.status(400).json({ error: err.message });

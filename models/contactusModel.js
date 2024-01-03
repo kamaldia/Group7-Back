@@ -18,7 +18,7 @@ const Contact = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    contactEmsil: {
+    contactEmail: {
       type: DataTypes.STRING,
       allowNull: false,
     },
