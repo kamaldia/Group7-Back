@@ -1,4 +1,5 @@
 import express from "express";
+import Verification from '../middlewares/jwt.js';
 import {
   createContact,
   getContacts,
@@ -9,15 +10,15 @@ import {
 const router = express.Router();
 
 // Create a new contact
-router.post("/", createContact);
+router.post("/", Verification.verifyLogin, createContact);
 
 // Get all contacts
-router.get("/", getContacts);
+router.get("/", Verification.verifyLogin, getContacts);
 
 // Get a specific contact by ID
-router.get("/:id", getContactById);
+router.get("/:id", Verification.verifyLogin, getContactById);
 
 // Delete a contact by ID
-router.delete("/:id", deleteContact);
+router.delete("/:id", Verification.verifyLogin, deleteContact);
 
 export default router;

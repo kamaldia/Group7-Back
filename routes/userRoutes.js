@@ -1,26 +1,26 @@
 import express from "express";
 import Verification from '../middlewares/jwt.js';
 import {
-  createAdmin,
-  getAllAdmins,
+  createUser,
+  getAllUsers,
   getAdminById,
-  updateAdmin,
+  updateUser,
   deleteAdmin,
 } from "../controllers/adminController.js";
 
 const router = express.Router();
 
 //Create
-router.post("/", Verification.verifyLogin, Verification.verifyAdmin, createAdmin);
+router.post("/", Verification.verifyLogin, createUser);
 
 // Get all
-router.get("/", Verification.verifyLogin, Verification.verifyAdmin, getAllAdmins);
+router.get("/", Verification.verifyLogin, Verification.verifyAdmin, getAllUsers);
 
 // Get single
 router.get("/:id", Verification.verifyLogin, Verification.verifyAdmin, getAdminById);
 
 // Update
-router.put("/:id", Verification.verifyLogin, Verification.verifyAdmin, updateAdmin);
+router.put("/:id", Verification.verifyLogin, updateUser);
 
 // Delete
 router.delete("/:id", Verification.verifyLogin, Verification.verifyAdmin, deleteAdmin);
