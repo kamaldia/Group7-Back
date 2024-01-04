@@ -1,7 +1,13 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
 
 const Admin = sequelize.define("Admins", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   username: {
     type: DataTypes.STRING,
     unique: true,
@@ -11,5 +17,5 @@ const Admin = sequelize.define("Admins", {
     type: DataTypes.STRING,
   },
 });
-Admin.sync();
+// Admin.sync();
 export default Admin;

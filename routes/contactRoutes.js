@@ -9,15 +9,15 @@ import {
 const router = express.Router();
 
 // Create a new contact
-router.post("/contacts", createContact);
+router.post("/", createContact);
 
 // Get all contacts
-router.get("/contacts", getContacts);
+router.get("/", getContacts);
 
 // Get a specific contact by ID
-router.get("/contacts/:id", getContactById);
+router.get("/:id", getContactById);
 
 // Delete a contact by ID
-router.delete("/contacts/:id", deleteContact);
+router.delete("/:id", deleteContact);
 
 export default router;

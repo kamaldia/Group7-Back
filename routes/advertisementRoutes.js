@@ -10,14 +10,14 @@ import upload from "../middlewares/uploadMiddleware.js";
 
 const router = express.Router();
 
-router.post("/advertisements", upload.single("image"), createAdvertisement);
+router.post("/", upload.single("image"), createAdvertisement);
 
-router.get("/advertisements", getAllAdvertisements);
+router.get("/", getAllAdvertisements);
 
-router.get("/advertisements/:id", getAdvertisementById);
+router.get("/:id", getAdvertisementById);
 
-router.put("/advertisements/:id", upload.single("image"), updateAdvertisement);
+router.put("/:id", upload.single("image"), updateAdvertisement);
 
-router.delete("/advertisements/:id", deleteAdvertisement);
+router.delete("/:id", deleteAdvertisement);
 
 export default router;

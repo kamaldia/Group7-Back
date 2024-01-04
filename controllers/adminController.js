@@ -1,30 +1,15 @@
-import Admin  from "../models/adminModel.js";
+import  Admin  from "../models/adminModel.js";
+import bcrypt from 'bcrypt'
+import User from "../models/userModel.js";
 
-const loginAdmin = async (req, res) => {
-  const { username, password } = req.body;
 
-  try {
-    const admin = await Admin.findOne({ where: { username } });
-
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found" });
-    }
-
-    if (password === admin.password) {
-      res.status(200).json({ status: "ok", data: admin });
-    } else {
-      res.status(401).json({ error: "Incorrect password" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to retrieve the admin" });
-  }
-};
 
 // Create a new admin
 const createAdmin = async (req, res) => {
+  const {username,password} = req.body
   try {
-    const newAdmin = await Admin.create(req.body);
+    const hashedPassword = await bcrypt.hash(password,12)
+    const newAdmin = await User.create({username,hashedPassword});
     res.status(201).json(newAdmin);
   } catch (error) {
     console.error(error);
@@ -35,7 +20,7 @@ const createAdmin = async (req, res) => {
 // Get all
 const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admin.findAll({ order: [["createdAt", "DESC"]] });
+    const admins = await User.findAll({ order: [["createdAt", "DESC"]] });
     res.status(200).json(admins);
   } catch (error) {
     console.error(error);
@@ -104,5 +89,4 @@ export {
   getAdminById,
   updateAdmin,
   deleteAdmin,
-  loginAdmin,
 };

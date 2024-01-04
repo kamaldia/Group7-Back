@@ -1,9 +1,18 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
-import Description from "./descriptionModel.js";
 import Category from "./categoryModel.js";
-
+import Description from "./descriptionModel.js";
+import Cart from "./cartModel.js";
+import CartItem from "./cartItemsModel.js";
+import Order from "./orderModel.js";
+import OrderItem from "./orderItemsModel.js";
 const Product = sequelize.define("Products", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -17,21 +26,24 @@ const Product = sequelize.define("Products", {
     allowNull: false,
   },
   imagePath: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
+    set(value) {
+      this.setDataValue("imagePath", JSON.stringify(value));
+    },
+    get() {
+      const storedValue = this.getDataValue("imagePath");
+      return storedValue ? JSON.parse(storedValue) : [];
+    },
   },
   featured: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-}, { timestamps: true }
-);
+});
 
-Category.hasMany(Product);
-Product.belongsTo(Category);
 
-Description.hasOne(Product);
-Product.belongsTo(Description);
 
-Product.sync();
+
+// Product.sync();
 export default Product;

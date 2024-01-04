@@ -1,19 +1,21 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
 
-const Advertisement = sequelize.define(
-  "Advertisements",
-  {
-    title: {
-      type: DataTypes.STRING,
-      defaultValue: "Advertisement title",
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+const Advertisement = sequelize.define("Advertisement", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  { timestamps: true }
-);
-Advertisement.sync();
+  title: {
+    type: DataTypes.STRING,
+    defaultValue: "Advertisement title",
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+// Advertisement.sync();
 export default Advertisement;

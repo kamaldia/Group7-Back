@@ -1,9 +1,15 @@
-import { DataTypes } from "sequelize";
+import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
 
 const Blog = sequelize.define(
   "Blogs",
   {
+    id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -17,7 +23,7 @@ const Blog = sequelize.define(
       allowNull: false,
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
     image: {
@@ -27,5 +33,5 @@ const Blog = sequelize.define(
   },
   { timestamps: true }
 );
-Blog.sync();
+// Blog.sync();
 export default Blog;

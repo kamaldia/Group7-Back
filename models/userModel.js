@@ -1,22 +1,25 @@
 import { DataTypes,Sequelize } from "sequelize";
 import sequelize from "../config/connection.js";
+import Order from "./orderModel.js";
+import Cart from "./cartModel.js";
 
-const Category = sequelize.define("Categories", {
+const User = sequelize.define("Users", {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
   },
-  categoryName: {
+  username: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
   },
-  categoryImage: {
+  password: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
 });
-// Category.sync();
-export default Category;
+
+
+// User.sync();
+export default User;

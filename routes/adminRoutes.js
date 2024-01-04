@@ -5,27 +5,23 @@ import {
   getAdminById,
   updateAdmin,
   deleteAdmin,
-  loginAdmin,
 } from "../controllers/adminController.js";
 
 const router = express.Router();
 
-//login admin
-router.post("/admin", loginAdmin);
-
 //Create
-router.post("/admins", createAdmin);
+router.post("/", createAdmin);
 
 // Get all
-router.get("/admins", getAllAdmins);
+router.get("/", getAllAdmins);
 
 // Get single
-router.get("/admins/:id", getAdminById);
+router.get("/:id", getAdminById);
 
 // Update
-router.put("/admins/:id", updateAdmin);
+router.put("/:id", updateAdmin);
 
 // Delete
-router.delete("/admins/:id", deleteAdmin);
+router.delete("/:id", deleteAdmin);
 
 export default router;
