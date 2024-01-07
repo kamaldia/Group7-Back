@@ -25,8 +25,8 @@ Order.belongsToMany(Product, { through: OrderItem });
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
 
-// Category.hasMany(Product, { foreignKey: { allowNull: true } });
-// Product.belongsTo(Category, { foreignKey: { allowNull: true } });
+Category.hasMany(Product, { foreignKey: { allowNull: true } });
+Product.belongsTo(Category, { foreignKey: { allowNull: true } });
 
 // Description.hasOne(Product, { foreignKey: { allowNull: true } });
 // Product.belongsTo(Description, { foreignKey: { allowNull: true } });

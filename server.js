@@ -64,7 +64,7 @@ app.use("/api/advertisement", advertisementRoutes);
 app.use('/api/shop',shopRouter)
 
 
-sequelize.sync({ force: false });
+sequelize.sync({ force: false, alter:true });
 
 
 app.listen(PORT, () => {
