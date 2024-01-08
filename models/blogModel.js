@@ -22,10 +22,6 @@ const Blog = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    date: {
-      type: DataTypes.DATEONLY,
-      defaultValue: DataTypes.NOW,
-    },
     image: {
       type: DataTypes.STRING,
       allowNull: false,

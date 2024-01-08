@@ -28,12 +28,12 @@ const getAllBlogs = async (req, res) => {
 
 // create a new Blog
 const createBlog = async (req, res) => {
-  const { title, author, content, date } = req.body;
+  const { title, author, content } = req.body;
   const image = req.file.path;
 
   //add Blog to db
   try {
-    const savedBlog = await Blog.create({title,author,content,date,image});
+    const savedBlog = await Blog.create({title,author,content,image});
     res.status(201).json(savedBlog);
   } catch (error) {
     console.log(error);
